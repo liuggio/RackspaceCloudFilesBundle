@@ -65,7 +65,7 @@ public function registerBundles()
 app/config/config.yml
 
 ```
-# Escape Rackspace Cloud Files configuration
+#  Rackspace Cloud Files configuration
 
 liuggio_rackspace_cloud_files:
     service_class: Liuggio\RackspaceCloudFilesStreamWrapper\StreamWrapper\RackspaceCloudFilesStreamWrapper
@@ -112,10 +112,9 @@ echo "</pre>";
 ## Usage example with assetic
 
 
+see
 
-
-
-
+http://www.welcometothebundle.com/symfony2-assets-on-rackspace-cloud-files/
 
 
 
