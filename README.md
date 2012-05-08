@@ -1,10 +1,12 @@
 Introduction
 ------------
 
+
 Rackspace Cloud Files bundle is a simple and easy way to use the namespaced version of php-cloudfiles with Symfony2 applications,
 
 but it has also some facilities for handle the static file with the rackspace cloud files.
 
+This Bundle borns as fork of the escapestudios/EscapeRackspaceCloudFilesBundle, now these two bundles are very different.
 
 [![Build Status](https://secure.travis-ci.org/liuggio/RackspaceCloudFilesBundle.png)](http://travis-ci.org/liuggio/RackspaceCloudFilesBundle)
 
