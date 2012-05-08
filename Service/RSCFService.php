@@ -133,7 +133,7 @@ class RSCFService implements  \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspac
      * @return resource|false
      */
     public function createResourceFromPath($path) {
-        $resource = $this->getResource_class();
+        $resource = $this->getResourceClass();
         $resource = new $resource($path);
         if (!$resource) {
             return false;
