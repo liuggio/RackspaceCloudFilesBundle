@@ -34,7 +34,7 @@ deps:
 
 [RackspaceCloudFilesStreamWrapper]
     git=https://github.com/liuggio/RackspaceCloudFilesStreamWrapper.git
-    target=liuggio-rcfs-streamwrapper
+    target=liuggio-rscf-streamwrapper
 
 ```
 
