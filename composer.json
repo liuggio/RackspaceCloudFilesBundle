@@ -14,12 +14,6 @@
             "homepage": "https://github.com/tvision"
         }
     ],
-    "require": {
-        "php": ">=5.3.2",
-        "symfony/symfony": "2.*",
-        "rackspace/php-cloudfiles": "dev-master",
-        "liuggio/rackspace-cloud-files-streamwrapper": "dev-master"
-    },
     "autoload": {
         "psr-0": { "Liuggio\\RackspaceCloudFilesBundle": "" }
     },
@@ -42,5 +36,13 @@
                 }
             }
         }
-    ]
+    ],
+
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/symfony": "2.*",
+        "rackspace/php-cloudfiles": "*",
+        "liuggio/rackspace-cloud-files-streamwrapper": "dev-master"
+    }
+    
 }
