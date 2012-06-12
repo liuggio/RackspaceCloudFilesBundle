@@ -1,0 +1,41 @@
+{
+    "name": "liuggio/rackspace-cloud-files-bundle",
+    "type": "symfony-bundle",
+    "description": "Provides rackspace cloud files support for #Symfony2 Bundles",
+    "keywords": ["cloud", "rackspace", "assetic"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "liuggio",
+            "homepage": "http://www.welcometothebundle.com/"
+        },
+        {
+            "name": "tvision contributions",
+            "homepage": "https://github.com/tvision"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/symfony": "2.*",
+        "rackspace/php-cloudfiles": "dev-master",
+        "liuggio/rackspace-cloud-files-streamwrapper": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Liuggio\\RackspaceCloudFilesBundle": "" }
+    },
+    "target-dir": "Liuggio/RackspaceCloudFilesBundle",
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "version": "master",
+                "name": "rackspace/php-cloudfiles",
+                "source": {
+                    "url": "https://github.com/rackspace/php-cloudfiles",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        }
+    ]
+}
