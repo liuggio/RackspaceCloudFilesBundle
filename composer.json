@@ -39,8 +39,8 @@
     "require": {
         "php": ">=5.3.2",
         "symfony/symfony": "2.*",
-        "rackspace/php-cloudfiles": "*",
-        "liuggio/rackspace-cloud-files-streamwrapper": "*"
+        "rackspace/php-cloudfiles": "dev-master",
+        "liuggio/rackspace-cloud-files-streamwrapper": "dev-master"
     }
 
 }
