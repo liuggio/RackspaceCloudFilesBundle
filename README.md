@@ -16,8 +16,8 @@ see the blog post for more detail
 [http://www.welcometothebundle.com/symfony2-assets-on-rackspace-cloud-files/](http://www.welcometothebundle.com/symfony2-assets-on-rackspace-cloud-files)
 
 
-Installation
------------
+Installation (old school)
+-------------------------------
 
 see the blog post for more detail
 
@@ -57,10 +57,42 @@ public function registerBundles()
 {
     return array(
         //other bundles
-        new \Liuggio\RackspaceCloudFilesBundle\LiuggioRackspaceCloudFilesBundle(),
+        new Liuggio\RackspaceCloudFilesBundle\LiuggioRackspaceCloudFilesBundle(),
     );
     ...
 ```
+
+Installation Composer
+-------------------------------
+
+* 1 First, add the dependent bundles to the vendor/bundles directory. Add the following lines to the composer.json file
+
+```
+"require": {
+    # ..
+    "liuggio/rackspace-cloud-files-bundle": ">=2.0",
+    # ..
+}
+```
+
+* 2 Then run `composer install`
+
+
+* 3 Then add in your `app/AppKernel`
+
+``` yaml
+
+ class AppKernel extends Kernel
+ {
+     public function registerBundles()
+     {
+         $bundles = array(
+         // ...
+            new Liuggio\RackspaceCloudFilesBundle\LiuggioRackspaceCloudFilesBundle(),
+         // ...
+
+```
+
 
 ## Configuration
 
@@ -150,6 +182,8 @@ Contributor
 
 
 1. liuggio
+
+2. benjamindulau
 
 
 License
