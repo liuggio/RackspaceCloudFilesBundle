@@ -68,11 +68,29 @@ Installation Composer
 * 1 First, add the dependent bundles to the vendor/bundles directory. Add the following lines to the composer.json file
 
 ```
-"require": {
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "rackspace/php-cloudfiles",
+                "version": "master",
+                "source": {
+                    "url": "git://github.com/rackspace/php-cloudfiles.git",
+                    "type": "git",
+                    "reference": "master"
+                },
+                "dist": {
+                    "url": "https://github.com/rackspace/php-cloudfiles/zipball/master",
+                    "type": "zip"
+                }
+            }
+        }
+    ],
+    "require": {
     # ..
     "liuggio/rackspace-cloud-files-bundle": ">=2.0",
     # ..
-}
+    }
 ```
 
 * 2 Then run `composer install`
