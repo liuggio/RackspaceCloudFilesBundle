@@ -169,7 +169,7 @@ see
 http://www.welcometothebundle.com/symfony2-assets-on-rackspace-cloud-files/
 
 
-## Installing bundles assets (public directory) to cloufiles with `rscf:assets:install` special console command
+## Installing bundles assets (public directory) to cloudfiles with `rscf:assets:install` special console command
 
 ```
 app/console rscf:assets:install rscf://my_container/my/path
