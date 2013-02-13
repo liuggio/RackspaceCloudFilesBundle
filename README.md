@@ -169,6 +169,16 @@ see
 http://www.welcometothebundle.com/symfony2-assets-on-rackspace-cloud-files/
 
 
+## Installing bundles assets (public directory) to cloufiles with `rscf:assets:install` special console command
+
+```
+app/console rscf:assets:install rscf://my_container/my/path
+```
+
+This will copy assets just like the `assets:install` command would but directly to cloudfiles.
+**Note**: For those wondering why this command could be needed, note that assetic mainly handles js/css assets, and when
+ not using the cssembed filter, you still need to install images to your cloudfiles container. This command prevent you
+ from having to do that by hand.
 
 
 Requirements
