@@ -81,10 +81,10 @@ class RSCFServiceTest extends WebTestCase
         $resource->setContainer($container);
         $resource->setCurrentPath($path);
 
-        $service = $this->getMockService(array('getResource_class','apiGetContainer', 'apiGetObjectByContainer'));
+        $service = $this->getMockService(array('getResourceClass','apiGetContainer', 'apiGetObjectByContainer'));
 
         $service->expects($this->any())
-            ->method('getResource_class')
+            ->method('getResourceClass')
             ->will($this->returnValue('\\Liuggio\\RackspaceCloudFilesStreamWrapper\\RackspaceCloudFilesResource'));
         $service->expects($this->any())
             ->method('apiGetContainer')
