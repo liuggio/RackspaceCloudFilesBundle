@@ -25,6 +25,7 @@ class AssetsInstallCommand extends ContainerAwareCommand
         $this
             ->setName('rscf:assets:install')
             ->setDefinition(array(
+                new InputArgument('localDir', InputArgument::REQUIRED, 'path/to/dir, all , bundle name'),
                 new InputArgument('target', InputArgument::REQUIRED, 'The target directory'),
                 new InputOption('verbose', 'v', InputOption::VALUE_NONE, 'Verbose mode'),
             ))
@@ -55,35 +56,88 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+/*        print_r(stream_get_wrappers());*/
         $targetArg = rtrim($input->getArgument('target'), '/');
+        $localDir = rtrim($input->getArgument('localDir'), '/');
 
         $output->writeln('Installing assets to rackspace cloudfiles');
 
-        foreach ($this->getContainer()->get('kernel')->getBundles() as $bundle) {
-            if (is_dir($originDir = $bundle->getPath().'/Resources/public')) {
-                $bundlesDir = $targetArg.'/bundles/';
-                $targetDir  = $bundlesDir.preg_replace('/bundle$/', '', strtolower($bundle->getName()));
+        $bundles = $this->getContainer()->get('kernel')->getBundles();
+        $bundlesName =  $this->getContainer()->getParameter('kernel.bundles');
+        //$output->writeln(sprintf('Installing assets for <comment>%s</comment> ', $localDir));
 
-                $output->writeln(sprintf('Installing assets for <comment>%s</comment> into <comment>%s</comment>', $bundle->getNamespace(), $targetDir));
+        if (in_array($localDir, $bundlesName)) {
+            $output->writeln(sprintf('Installing assets for bundle <comment>%s</comment> ', $localDir));
+            $bundlePath = $this->getBundlePath($localDir);
+            $targetDir = $this->getBundleTargetDir($targetArg, $bundlePath);
+            $originDir = $bundlePath.'/Resources/public';
+            $this->flush($input, $output, $originDir, $targetDir);
+        }
+        elseif(is_dir($localDir)){
+            $output->writeln(sprintf('Installing assets for dir <comment>%s</comment> ', $localDir));
+            $targetDir = $this->getFileSystemTargetDir($targetArg, $localDir);
+            $originDir = $localDir;
+            $this->flush($input, $output, $originDir, $targetDir);
+        }
+        elseif($localDir == "all") {
+            $output->writeln(sprintf('Installing assets for all bundles '));
+            foreach($bundles as $bundle){
+                $targetDir = $this->getBundleTargetDir($targetArg, $bundle->getPath());
+                $this->flush($input, $output, $bundle->getPath().'/Resources/public', $targetDir);
+            }
+        }
+        else {
+            $output->writeln(sprintf('localDir option does not exist!available options are: path/to/dir, src/, bundle name'));
+        }
+    }
 
-                // We use a custom iterator to ignore VCS files
-                $iterator = Finder::create()->in($originDir);
-                foreach ($iterator as $file) {
-                    if ($file->isFile()) {
-                        $targetFile = $targetDir.'/'.$file->getRelativePathname();
-                        if ($input->getOption('verbose')) {
-                            $output->writeln(sprintf(
-                                '<comment>%s</comment> <info>[file+]</info> %s',
-                                date('H:i:s'),
-                                $targetFile
-                            ));
-                        }
-                        if (false === @file_put_contents($targetFile, file_get_contents($file))) {
-                            throw new \RuntimeException('Unable to write file '.$targetFile);
-                        }
-                    }
+
+
+    protected function flush($input, $output, $originDir, $targetDir){
+        $iterator = Finder::create()->in($originDir);
+        foreach ($iterator as $file) {
+            if ($file->isFile()) {
+                $targetFile = $targetDir.'/'.$file->getRelativePathname();
+                if ($input->getOption('verbose')) {
+                    $output->writeln(sprintf(
+                            '<comment>%s</comment> <info>[file+]</info> %s',
+                            date('H:i:s'),
+                            $targetFile
+                        ));
+                }
+                 if (false === @file_put_contents($targetFile, file_get_contents($file))) {
+                    throw new \RuntimeException('Unable to write file '.$targetFile);
                 }
             }
         }
     }
+
+
+    protected function getBundleTargetDir($targetArg, $bundlePath){
+        if (is_dir($bundlePath.'/Resources/public')) {
+            $bundlesDir = $targetArg.'/bundles/';
+            $targetDir  = $bundlesDir;
+            return $targetDir;
+        }
+        else {
+            return false;
+        }
+    }
+
+    protected function getFileSystemTargetDir($targetArg, $dir){
+        if (is_dir($dir)) {
+            $targetDir  = $targetArg."/".$dir;
+            return $targetDir;
+        }
+        else {
+            return false;
+        }
+    }
+
+    protected function getBundlePath($bundleName){
+        $path = $this->getContainer()->get('kernel')->locateResource('@'.$bundleName);
+        return $path;
+    }
+
+
 }
