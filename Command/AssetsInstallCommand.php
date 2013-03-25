@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Finder\Finder;
-
 /**
  * This command installs assets directly to rackspace cloudfiles container
  *
@@ -17,6 +16,7 @@ use Symfony\Component\Finder\Finder;
  */
 class AssetsInstallCommand extends ContainerAwareCommand
 {
+
     /**
      * @see Command
      */
@@ -27,6 +27,7 @@ class AssetsInstallCommand extends ContainerAwareCommand
             ->setDefinition(array(
                 new InputArgument('localDir', InputArgument::REQUIRED, 'path/to/dir, all , bundle name'),
                 new InputArgument('target', InputArgument::REQUIRED, 'The target directory'),
+                new InputArgument('filter', InputArgument::OPTIONAL, 'path filter'),
                 new InputOption('verbose', 'v', InputOption::VALUE_NONE, 'Verbose mode'),
             ))
             ->setDescription('Installs bundles web assets under a rackspace cloudfiles container')
@@ -56,15 +57,20 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-/*        print_r(stream_get_wrappers());*/
         $targetArg = rtrim($input->getArgument('target'), '/');
         $localDir = rtrim($input->getArgument('localDir'), '/');
+
+        if($input->getArgument('filter')){
+            $filter = $input->getArgument('filter');
+        }
+        else {
+            $filter = false;
+        }
 
         $output->writeln('Installing assets to rackspace cloudfiles');
 
         $bundles = $this->getContainer()->get('kernel')->getBundles();
         $bundlesName =  $this->getContainer()->getParameter('kernel.bundles');
-        //$output->writeln(sprintf('Installing assets for <comment>%s</comment> ', $localDir));
 
         if (in_array($localDir, $bundlesName)) {
             $output->writeln(sprintf('Installing assets for bundle <comment>%s</comment> ', $localDir));
@@ -77,7 +83,7 @@ EOT
             $output->writeln(sprintf('Installing assets for dir <comment>%s</comment> ', $localDir));
             $targetDir = $this->getFileSystemTargetDir($targetArg, $localDir);
             $originDir = $localDir;
-            $this->flush($input, $output, $originDir, $targetDir);
+            $this->flush($input, $output, $originDir, $targetDir, $filter);
         }
         elseif($localDir == "all") {
             $output->writeln(sprintf('Installing assets for all bundles '));
@@ -91,12 +97,18 @@ EOT
         }
     }
 
-
-
-    protected function flush($input, $output, $originDir, $targetDir){
+    /**
+     * @param $input
+     * @param $output
+     * @param $originDir
+     * @param $targetDir
+     * @param bool $filter
+     */
+    protected function flush($input, $output, $originDir, $targetDir, $filter = false){
         $iterator = Finder::create()->in($originDir);
         foreach ($iterator as $file) {
             if ($file->isFile()) {
+                $targetDir = $filter?$this->filterLocalDir($originDir, $filter):$targetDir;
                 $targetFile = $targetDir.'/'.$file->getRelativePathname();
                 if ($input->getOption('verbose')) {
                     $output->writeln(sprintf(
@@ -105,14 +117,33 @@ EOT
                             $targetFile
                         ));
                 }
-                 if (false === @file_put_contents($targetFile, file_get_contents($file))) {
+                if (false === @file_put_contents($targetFile, file_get_contents($file))) {
                     throw new \RuntimeException('Unable to write file '.$targetFile);
                 }
             }
         }
     }
 
+    /**
+     * @param $localDir
+     * @param $filter
+     * @return bool|mixed
+     */
+    protected function filterLocalDir($localDir, $filter){
+        if(strstr($localDir, $filter)){
+            return str_replace($filter, '', $localDir);
+        }
+        else {
+            return false;
+        }
 
+    }
+
+    /**
+     * @param $targetArg
+     * @param $bundlePath
+     * @return bool|string
+     */
     protected function getBundleTargetDir($targetArg, $bundlePath){
         if (is_dir($bundlePath.'/Resources/public')) {
             $bundlesDir = $targetArg.'/bundles/';
@@ -124,9 +155,14 @@ EOT
         }
     }
 
-    protected function getFileSystemTargetDir($targetArg, $dir){
-        if (is_dir($dir)) {
-            $targetDir  = $targetArg."/".$dir;
+    /**
+     * @param $targetArg
+     * @param $localDir
+     * @return string
+     */
+    protected function getFileSystemTargetDir($targetArg, $localDir){
+        if (is_dir($localDir)) {
+            $targetDir  = $targetArg."/".$localDir;
             return $targetDir;
         }
         else {
@@ -134,6 +170,10 @@ EOT
         }
     }
 
+    /**
+     * @param $bundleName
+     * @return mixed
+     */
     protected function getBundlePath($bundleName){
         $path = $this->getContainer()->get('kernel')->locateResource('@'.$bundleName);
         return $path;
