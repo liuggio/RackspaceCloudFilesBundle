@@ -37,7 +37,8 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('account')->defaultValue(null)->end()
                         ->scalarNode('auth_host')->defaultValue(null)->end()
                         ->scalarNode('servicenet')->defaultValue(false)->end()
-                        ->scalarNode('host')->defaultValue('https://lon.manage.rackspacecloud.com')->end()
+                        ->scalarNode('container_name')->defaultValue(null)->end()
+                        ->scalarNode('host')->defaultValue('https://lon.identity.api.rackspacecloud.com/v2.0')->end()
                     ->end()
               ->end();
 

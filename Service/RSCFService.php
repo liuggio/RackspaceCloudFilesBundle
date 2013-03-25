@@ -2,6 +2,9 @@
 
 namespace Liuggio\RackspaceCloudFilesBundle\Service;
 
+use Liuggio\RackspaceCloudFilesBundle\Service\RackspaceApi;
+use \OpenCloud\ObjectStore\Container;
+
 /**
  * Description of RackSpaceObject
  *
@@ -9,15 +12,13 @@ namespace Liuggio\RackspaceCloudFilesBundle\Service;
  */
 class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\RackspaceCloudFilesServiceInterface
 {
-    private $authentication_service;
+    private $rackspaceService;
 
     private $connection_class;
 
     private $servicenet;
 
-    private static $authentication;
-
-    private static $connection;
+//    private static $connection;
 
     private $protocolName;
 
@@ -27,22 +28,11 @@ class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspace
 
     private  $file_type_guesser;
 
-    /**
-     *
-     * $protocolName,
-     * $container_prefix,
-     * $authentication,
-     * $connection_class,
-     * $servicenet
-     *
-     * @param $authentication_service
-     * @param  $connection_service
-     * @param  $stream_wrapper_service
-     */
-    public function __construct($protocol_name, $authentication_service, $connection_class, $servicenet, $stream_wrapper_class, $resource_entity_class, $file_type_guesser)
+
+    public function __construct($protocol_name, RackspaceApi $rackspaceService, $connection_class, $servicenet, $stream_wrapper_class, $resource_entity_class, $file_type_guesser)
     {
         $this->protocolName = $protocol_name;
-        $this->authentication_service = $authentication_service;
+        $this->rackspaceService = $rackspaceService;
         $this->setConnectionClass($connection_class);
         $this->setServicenet($servicenet);
         $this->streamWrapperClass = $stream_wrapper_class;
@@ -50,35 +40,20 @@ class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspace
         $this->setFileTypeGuesser($file_type_guesser);
     }
 
-    /**
-     * get the RSCF Authentication Service
-     *
-     * @return authentication
-     */
-    public function getAuthentication()
-    {
-        if (!self::$authentication) {
-            self::$authentication = $this->getAuthenticationService();
-            self::$authentication->authenticate();
-        }
-        $auth =  self::$authentication;
-        return $auth;
-    }
-
-    /**
-     * get the RSCF Connection Service
-     *
-     * @return connection
-     */
-    public function getConnection()
-    {
-        if (!self::$connection) {
-            $connectionClass=  $this->getConnectionClass();
-            $auth = $this->getAuthentication();
-            self::$connection = new $connectionClass($auth, $this->getServiceNet());
-        }
-        return self::$connection;
-    }
+//    /**
+//     * get the RSCF Connection Service
+//     *
+//     * @return connection
+//     */
+//    public function getConnection()
+//    {
+//        if (!self::$connection) {
+//            $connectionClass=  $this->getConnectionClass();
+//            $auth = $this->getAuthentication();
+//            self::$connection = new $connectionClass($auth, $this->getServiceNet());
+//        }
+//        return self::$connection;
+//    }
 
     /**
      * @return string
@@ -140,24 +115,28 @@ class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspace
             return false;
         }
 
-        $container = $this->getConnection()->get_container($container_name);
+        $container = $this->getRackspaceService()->getContainer($container_name);
         if (!$container) {
             return false;
         }
         return $container;
     }
 
+
     /**
-     * @param $container
-     * @param string$object_name
-     * @return \stdClass
+     * @param \OpenCloud\ObjectStore\Container $container
+     * @param $objectData
+     * @param $pathLocalFile
+     *
+     * @return bool|\stdClass
      */
-    public function apiGetObjectByContainer($container, $object_name)
+    public function apiGetObjectByContainer(Container $container, $objectData, $pathLocalFile)
     {
         if (!$container) {
             return false;
         }
-        return $container->create_object($object_name);
+        $object = $container->DataObject();
+        return $object->Create($objectData, $pathLocalFile);
     }
 
     /**
@@ -173,13 +152,18 @@ class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspace
             return false;
         }
 
-        $container = $this->apiGetContainer($resource->getContainerName());
+        $container = $this->getRackspaceService()->getContainer();
         if (!$container) {
             return false;
         }
         $resource->setContainer($container);
         //create_object but no problem if already exists
-        $obj = $this->apiGetObjectByContainer($container, $resource->getResourceName());
+        $objectData = array(
+            'name'  => $resource->getResourceName(),
+            'content_type' => $this->guessFileType($path),
+        );
+
+        $obj = $this->apiGetObjectByContainer($container, $objectData, $path);
         if (!$obj) {
             return false;
         }
@@ -207,14 +191,14 @@ class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspace
         return $function::guessByFileName($filename);
     }
 
-    public function setAuthenticationService($authentication_service)
-    {
-        $this->authentication_service = $authentication_service;
-    }
+//    public function setAuthenticationService($authentication_service)
+//    {
+//        $this->authentication_service = $authentication_service;
+//    }
 
-    public function getAuthenticationService()
+    public function getRackspaceService()
     {
-        return $this->authentication_service;
+        return $this->rackspaceService;
     }
 
     public function setConnectionClass($connection_class)
