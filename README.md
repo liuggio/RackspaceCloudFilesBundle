@@ -175,7 +175,7 @@ assetic:
 Type to the console
 
 ```
-app/console assetic:install
+app/console assetic:dump
 ```
 
 Requirements
