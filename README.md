@@ -68,24 +68,6 @@ Installation Composer
 * 1 First, add the dependent bundles to the vendor/bundles directory. Add the following lines to the composer.json file
 
 ```
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "rackspace/php-cloudfiles",
-                "version": "master",
-                "source": {
-                    "url": "git://github.com/rackspace/php-cloudfiles.git",
-                    "type": "git",
-                    "reference": "master"
-                },
-                "dist": {
-                    "url": "https://github.com/rackspace/php-cloudfiles/zipball/master",
-                    "type": "zip"
-                }
-            }
-        }
-    ],
     "require": {
     # ..
     "liuggio/rackspace-cloud-files-bundle": ">=2.0",
@@ -126,21 +108,18 @@ liuggio_rackspace_cloud_files:
 #        protocol_name: rscf
 #        class: Liuggio\StreamWrapper\RackspaceCloudFilesStreamWrapper
     auth:
-        authentication_class: CF_Authentication
-        connection_class: CF_Connection
         username: YOUR-USERNAME
         api_key: YOUR-API-KEY
         host: https://lon.auth.api.rackspacecloud.com # or usa
-        #servicenet: true
+        container_name: YOUR-CONTAINER-NAME
 ```
 
 ## Service(s)
 
-Get the Authentication objects to work with:
+Get the Rackspace service to work with:
 
 ```
-$auth = $this->get('liuggio_rackspace_cloud_files.service')->getAutentication();
-$conn = $this->get('liuggio_rackspace_cloud_files.service')->getConnection();
+$auth = $this->get('liuggio_rackspace_cloud_files.service')
 
 ```
 
@@ -149,14 +128,15 @@ $conn = $this->get('liuggio_rackspace_cloud_files.service')->getConnection();
 ```
 
 $conn = $this->get('liuggio_rackspace_cloud_files.service');
-$container = $conn->get_container('container-name');
+$container = $conn->apiGetContainer('container-name');
 
 or
 
 $container = $this->get('liuggio_rackspace_cloud_files.service')->apiGetContainer('container-name');
 
 echo "<pre>";
-print_r($container->list_objects());
+printf("Container %s has %d object(s) consuming %d bytes\n",
+    $container->name, $container->count, $container->bytes);
 echo "</pre>";
 ```
 
@@ -180,6 +160,23 @@ This will copy assets just like the `assets:install` command would but directly 
  not using the cssembed filter, you still need to install images to your cloudfiles container. This command prevent you
  from having to do that by hand.
 
+
+## Installing application assets (public directory) to cloudfiles with `assetic:install` special console command
+
+add this into the config.yml
+
+```
+assetic:
+    debug: false
+    use_controller: false
+    write_to: rsfc://%rackspace_container_name%
+```
+
+Type to the console
+
+```
+app/console assetic:install
+```
 
 Requirements
 ------------
