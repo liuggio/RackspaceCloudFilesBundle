@@ -4,6 +4,7 @@ namespace Liuggio\RackspaceCloudFilesBundle\Service;
 
 use Liuggio\RackspaceCloudFilesBundle\Service\RackspaceApi;
 use \OpenCloud\ObjectStore\Container;
+use OpenCloud\ObjectStore\DataObject;
 
 /**
  * Description of RackSpaceObject
@@ -15,10 +16,6 @@ class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspace
     private $rackspaceService;
 
     private $connection_class;
-
-    private $servicenet;
-
-//    private static $connection;
 
     private $protocolName;
 
@@ -34,26 +31,10 @@ class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspace
         $this->protocolName = $protocol_name;
         $this->rackspaceService = $rackspaceService;
         $this->setConnectionClass($connection_class);
-        $this->setServicenet($servicenet);
         $this->streamWrapperClass = $stream_wrapper_class;
         $this->resource_class = $resource_entity_class;
         $this->setFileTypeGuesser($file_type_guesser);
     }
-
-//    /**
-//     * get the RSCF Connection Service
-//     *
-//     * @return connection
-//     */
-//    public function getConnection()
-//    {
-//        if (!self::$connection) {
-//            $connectionClass=  $this->getConnectionClass();
-//            $auth = $this->getAuthentication();
-//            self::$connection = new $connectionClass($auth, $this->getServiceNet());
-//        }
-//        return self::$connection;
-//    }
 
     /**
      * @return string
@@ -107,7 +88,8 @@ class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspace
 
     /**
      * @param string $container_name
-     * @return \stdClass
+     *
+     * @return Container|false
      */
     public function apiGetContainer($container_name)
     {
@@ -126,22 +108,25 @@ class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspace
     /**
      * @param \OpenCloud\ObjectStore\Container $container
      * @param $objectData
-     * @param $pathLocalFile
      *
-     * @return bool|\stdClass
+     * @return DataObject
      */
-    public function apiGetObjectByContainer(Container $container, $objectData, $pathLocalFile)
+    public function apiGetObjectByContainer(Container $container, $objectData)
     {
         if (!$container) {
             return false;
         }
         $object = $container->DataObject();
-        return $object->Create($objectData, $pathLocalFile);
+        $object->name = $objectData['name'];
+        $object->content_type = $objectData['content_type'];
+
+        return $object;
     }
 
     /**
      *
      * @param string $path
+     *
      * @return resource|false
      */
     public function createResourceFromPath($path)
@@ -191,11 +176,6 @@ class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspace
         return $function::guessByFileName($filename);
     }
 
-//    public function setAuthenticationService($authentication_service)
-//    {
-//        $this->authentication_service = $authentication_service;
-//    }
-
     public function getRackspaceService()
     {
         return $this->rackspaceService;
@@ -209,16 +189,6 @@ class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspace
     public function getConnectionClass()
     {
         return $this->connection_class;
-    }
-
-    public function setServicenet($servicenet)
-    {
-        $this->servicenet = $servicenet;
-    }
-
-    public function getServicenet()
-    {
-        return $this->servicenet;
     }
 
 }
