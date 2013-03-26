@@ -16,8 +16,8 @@ see the blog post for more detail
 [http://www.welcometothebundle.com/symfony2-assets-on-rackspace-cloud-files/](http://www.welcometothebundle.com/symfony2-assets-on-rackspace-cloud-files)
 
 
-Installation
------------
+Installation (old school)
+-------------------------------
 
 see the blog post for more detail
 
@@ -57,10 +57,60 @@ public function registerBundles()
 {
     return array(
         //other bundles
-        new \Liuggio\RackspaceCloudFilesBundle\LiuggioRackspaceCloudFilesBundle(),
+        new Liuggio\RackspaceCloudFilesBundle\LiuggioRackspaceCloudFilesBundle(),
     );
     ...
 ```
+
+Installation Composer
+-------------------------------
+
+* 1 First, add the dependent bundles to the vendor/bundles directory. Add the following lines to the composer.json file
+
+```
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "rackspace/php-cloudfiles",
+                "version": "master",
+                "source": {
+                    "url": "git://github.com/rackspace/php-cloudfiles.git",
+                    "type": "git",
+                    "reference": "master"
+                },
+                "dist": {
+                    "url": "https://github.com/rackspace/php-cloudfiles/zipball/master",
+                    "type": "zip"
+                }
+            }
+        }
+    ],
+    "require": {
+    # ..
+    "liuggio/rackspace-cloud-files-bundle": ">=2.0",
+    # ..
+    }
+```
+
+* 2 Then run `composer install`
+
+
+* 3 Then add in your `app/AppKernel`
+
+``` yaml
+
+ class AppKernel extends Kernel
+ {
+     public function registerBundles()
+     {
+         $bundles = array(
+         // ...
+            new Liuggio\RackspaceCloudFilesBundle\LiuggioRackspaceCloudFilesBundle(),
+         // ...
+
+```
+
 
 ## Configuration
 
@@ -119,6 +169,16 @@ see
 http://www.welcometothebundle.com/symfony2-assets-on-rackspace-cloud-files/
 
 
+## Installing bundles assets (public directory) to cloudfiles with `rscf:assets:install` special console command
+
+```
+app/console rscf:assets:install rscf://my_container/my/path
+```
+
+This will copy assets just like the `assets:install` command would but directly to cloudfiles.
+**Note**: For those wondering why this command could be needed, note that assetic mainly handles js/css assets, and when
+ not using the cssembed filter, you still need to install images to your cloudfiles container. This command prevent you
+ from having to do that by hand.
 
 
 Requirements
@@ -151,15 +211,12 @@ Contributor
 
 1. liuggio
 
+2. benjamindulau
+
 
 License
 -------
 
-Copyright (C) 2012 by liuggio
+This bundle is under the MIT license. See the complete license in the bundle:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
+    Resources/meta/LICENSE

@@ -3,15 +3,16 @@
 namespace Liuggio\RackspaceCloudFilesBundle\Service;
 
 use Liuggio\RackspaceCloudFilesBundle\Service\RackspaceApi;
-use \OpenCloud\ObjectStore\Container;
+use OpenCloud\ObjectStore\Container;
 use OpenCloud\ObjectStore\DataObject;
+use Liuggio\RackspaceCloudFilesStreamWrapper\RackspaceCloudFilesServiceInterface;
 
 /**
  * Description of RackSpaceObject
  *
  * @author liuggio
  */
-class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\RackspaceCloudFilesServiceInterface
+class RSCFService implements RackspaceCloudFilesServiceInterface
 {
     private $rackspaceService;
 
@@ -93,10 +94,6 @@ class RSCFService implements \Liuggio\RackspaceCloudFilesStreamWrapper\Rackspace
      */
     public function apiGetContainer($container_name)
     {
-        if (!$this->getConnection()) {
-            return false;
-        }
-
         $container = $this->getRackspaceService()->getContainer($container_name);
         if (!$container) {
             return false;
