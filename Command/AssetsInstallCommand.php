@@ -105,20 +105,22 @@ EOT
      * @param bool $filter
      */
     protected function flush($input, $output, $originDir, $targetDir, $filter = false){
-        $iterator = Finder::create()->in($originDir);
-        foreach ($iterator as $file) {
-            if ($file->isFile()) {
-                $targetDir = $filter?$this->filterLocalDir($originDir, $filter):$targetDir;
-                $targetFile = $targetDir.'/'.$file->getRelativePathname();
-                if ($input->getOption('verbose')) {
-                    $output->writeln(sprintf(
-                            '<comment>%s</comment> <info>[file+]</info> %s',
-                            date('H:i:s'),
-                            $targetFile
-                        ));
-                }
-                if (false === @file_put_contents($targetFile, file_get_contents($file))) {
-                    throw new \RuntimeException('Unable to write file '.$targetFile);
+        if(is_dir($originDir)) {
+            $iterator = Finder::create()->in($originDir);
+            foreach ($iterator as $file) {
+                if ($file->isFile()) {
+                    $targetDir = $filter?$this->filterLocalDir($originDir, $filter):$targetDir;
+                    $targetFile = $targetDir.'/'.$file->getRelativePathname();
+                    if ($input->getOption('verbose')) {
+                        $output->writeln(sprintf(
+                                '<comment>%s</comment> <info>[file+]</info> %s',
+                                date('H:i:s'),
+                                $targetFile
+                            ));
+                    }
+                    if (false === @file_put_contents($targetFile, file_get_contents($file))) {
+                        throw new \RuntimeException('Unable to write file '.$targetFile);
+                    }
                 }
             }
         }
