@@ -70,8 +70,8 @@ Installation Composer
 ```
     "require": {
     # ..
-    "liuggio/rackspace-cloud-files-streamwrapper": ">=2.0",
-    "liuggio/rackspace-cloud-files-bundle": ">=2.0",
+    "liuggio/rackspace-cloud-files-streamwrapper": ">=2.1",
+    "liuggio/rackspace-cloud-files-bundle": ">=2.1",
     # ..
     }
 ```
