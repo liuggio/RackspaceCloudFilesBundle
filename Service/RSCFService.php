@@ -16,8 +16,6 @@ class RSCFService implements RackspaceCloudFilesServiceInterface
 {
     private $rackspaceService;
 
-    private $connection_class;
-
     private $protocolName;
 
     private $resource_class;
@@ -27,11 +25,10 @@ class RSCFService implements RackspaceCloudFilesServiceInterface
     private  $file_type_guesser;
 
 
-    public function __construct($protocol_name, RackspaceApi $rackspaceService, $connection_class, $servicenet, $stream_wrapper_class, $resource_entity_class, $file_type_guesser)
+    public function __construct($protocol_name, RackspaceApi $rackspaceService, $servicenet, $stream_wrapper_class, $resource_entity_class, $file_type_guesser)
     {
         $this->protocolName = $protocol_name;
         $this->rackspaceService = $rackspaceService;
-        $this->setConnectionClass($connection_class);
         $this->streamWrapperClass = $stream_wrapper_class;
         $this->resource_class = $resource_entity_class;
         $this->setFileTypeGuesser($file_type_guesser);
@@ -176,16 +173,6 @@ class RSCFService implements RackspaceCloudFilesServiceInterface
     public function getRackspaceService()
     {
         return $this->rackspaceService;
-    }
-
-    public function setConnectionClass($connection_class)
-    {
-        $this->connection_class = $connection_class;
-    }
-
-    public function getConnectionClass()
-    {
-        return $this->connection_class;
     }
 
 }
