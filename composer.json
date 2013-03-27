@@ -18,28 +18,10 @@
         "psr-0": { "Liuggio\\RackspaceCloudFilesBundle": "" }
     },
     "target-dir": "Liuggio/RackspaceCloudFilesBundle",
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "rackspace/php-cloudfiles",
-                "version": "master",
-                "source": {
-                    "url": "git://github.com/rackspace/php-cloudfiles.git",
-                    "type": "git",
-                    "reference": "master"
-                },
-                "dist": {
-                    "url": "https://github.com/rackspace/php-cloudfiles/zipball/master",
-                    "type": "zip"
-                }
-            }
-        }
-    ],
     "require": {
         "php": ">=5.3.2",
         "symfony/symfony": "2.*",
-        "rackspace/php-cloudfiles": "dev-master",
+        "rackspace/php-opencloud": "dev-master",
         "liuggio/rackspace-cloud-files-streamwrapper": "dev-master"
     }
 
