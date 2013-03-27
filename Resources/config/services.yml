@@ -1,9 +1,18 @@
 parameters:
+
+
     liuggio_rackspace_cloud_files.service.class: Liuggio\RackspaceCloudFilesBundle\Service\RSCFService
+    liuggio_rackspace_cloud_files.api.service.class: Liuggio\RackspaceCloudFilesBundle\Service\RackspaceApi
+    liuggio_rackspace_cloud_files.api.connection.class: OpenCloud\Rackspace
+
     liuggio_rackspace_cloud_files.resource_entity.class: Liuggio\RackspaceCloudFilesStreamWrapper\RackspaceCloudFilesResource
     liuggio_rackspace_cloud_files.filetype_guesser_entity.class: Liuggio\RackspaceCloudFilesBundle\FileTypeGuesser
 
 services:
+
+    liuggio_rackspace_cloud_files.api.service:
+        class: %liuggio_rackspace_cloud_files.api.service.class%
+        arguments: [%liuggio_rackspace_cloud_files.api.connection.class%, %liuggio_rackspace_cloud_files.auth.host%, %liuggio_rackspace_cloud_files.auth.username%, %liuggio_rackspace_cloud_files.auth.api_key%, %liuggio_rackspace_cloud_files.auth.container_name%]
 
     liuggio_rackspace_cloud_files.authentication:
         class: %liuggio_rackspace_cloud_files.auth.authentication_class%
@@ -11,4 +20,4 @@ services:
         
     liuggio_rackspace_cloud_files.service:
         class: %liuggio_rackspace_cloud_files.service.class%
-        arguments: [%liuggio_rackspace_cloud_files.stream_wrapper.protocol_name%, '@liuggio_rackspace_cloud_files.authentication', %liuggio_rackspace_cloud_files.auth.connection_class%, %liuggio_rackspace_cloud_files.auth.servicenet%, %liuggio_rackspace_cloud_files.stream_wrapper.class%, %liuggio_rackspace_cloud_files.resource_entity.class%, %liuggio_rackspace_cloud_files.filetype_guesser_entity.class%]
+        arguments: [%liuggio_rackspace_cloud_files.stream_wrapper.protocol_name%, '@liuggio_rackspace_cloud_files.api.service', %liuggio_rackspace_cloud_files.auth.connection_class%, %liuggio_rackspace_cloud_files.auth.servicenet%, %liuggio_rackspace_cloud_files.stream_wrapper.class%, %liuggio_rackspace_cloud_files.resource_entity.class%, %liuggio_rackspace_cloud_files.filetype_guesser_entity.class%]
