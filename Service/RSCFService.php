@@ -25,7 +25,7 @@ class RSCFService implements RackspaceCloudFilesServiceInterface
     private  $file_type_guesser;
 
 
-    public function __construct($protocol_name, RackspaceApi $rackspaceService, $servicenet, $stream_wrapper_class, $resource_entity_class, $file_type_guesser)
+    public function __construct($protocol_name, RackspaceApi $rackspaceService, $stream_wrapper_class, $resource_entity_class, $file_type_guesser)
     {
         $this->protocolName = $protocol_name;
         $this->rackspaceService = $rackspaceService;
