@@ -24,9 +24,9 @@ see the blog post for more detail
 deps:
 
 ```
-[php-cloudfiles]
-    git=git://github.com/rackspace/php-cloudfiles.git
-    target=/rackspace/php-cloudfiles
+[php-opencloud]
+    git=git://github.com/rackspace/php-opencloud.git
+    target=/rackspace/php-opencloud
 
 [RackspaceCloudFilesBundle]
     git=https://github.com/liuggio/RackspaceCloudFilesBundle.git
@@ -47,7 +47,7 @@ $loader->registerNamespaces(array(
     'Liuggio\\RackspaceCloudFilesBundle'        =>  __DIR__.'/../vendor/bundles',
   ));
 
-require_once __DIR__.'/../vendor/rackspace/php-cloudfiles/cloudfiles.php';
+require_once __DIR__.'/../vendor/rackspace/php-opencloud/lib/rackspace.php';
 ```
 
 app/AppKernel.php
@@ -70,6 +70,7 @@ Installation Composer
 ```
     "require": {
     # ..
+    "liuggio/rackspace-cloud-files-streamwrapper": ">=2.0",
     "liuggio/rackspace-cloud-files-bundle": ">=2.0",
     # ..
     }
