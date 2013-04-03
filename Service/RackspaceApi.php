@@ -30,13 +30,14 @@ class RackspaceApi
 
     private $urlType = 'publicURL';
 
-    public function __construct($connectionClass, $endPoint, $username, $apiKey, $containerName)
+    public function __construct($connectionClass, $endPoint, $username, $apiKey, $containerName, $region='LON')
     {
         $this->connectionClass = $connectionClass;
         $this->endpoint = $endPoint;
         $this->username = $username;
         $this->apiKey = $apiKey;
         $this->containerName = $containerName;
+        $this->region = $region;
     }
 
     /**
