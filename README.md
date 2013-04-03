@@ -112,6 +112,7 @@ liuggio_rackspace_cloud_files:
         api_key: YOUR-API-KEY
         host: https://lon.auth.api.rackspacecloud.com # or usa
         container_name: YOUR-CONTAINER-NAME
+        region: LON # or DFW or ORD
 ```
 
 ## Service(s)

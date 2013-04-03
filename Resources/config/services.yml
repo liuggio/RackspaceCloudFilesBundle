@@ -12,7 +12,7 @@ services:
 
     liuggio_rackspace_cloud_files.api.service:
         class: %liuggio_rackspace_cloud_files.api.service.class%
-        arguments: [%liuggio_rackspace_cloud_files.api.connection.class%, %liuggio_rackspace_cloud_files.auth.host%, %liuggio_rackspace_cloud_files.auth.username%, %liuggio_rackspace_cloud_files.auth.api_key%, %liuggio_rackspace_cloud_files.auth.container_name%]
+        arguments: [%liuggio_rackspace_cloud_files.api.connection.class%, %liuggio_rackspace_cloud_files.auth.host%, %liuggio_rackspace_cloud_files.auth.username%, %liuggio_rackspace_cloud_files.auth.api_key%, %liuggio_rackspace_cloud_files.auth.container_name%, %liuggio_rackspace_cloud_files.auth.region%]
 
     liuggio_rackspace_cloud_files.authentication:
         class: %liuggio_rackspace_cloud_files.auth.authentication_class%
