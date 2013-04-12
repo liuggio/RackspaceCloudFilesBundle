@@ -1,6 +1,6 @@
 <?php
 
-namespace Liuggio\RackspaceCloudFilesBundle\Command;
+namespace Tvision\RackspaceCloudFilesBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;

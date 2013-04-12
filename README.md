@@ -57,7 +57,7 @@ public function registerBundles()
 {
     return array(
         //other bundles
-        new Liuggio\RackspaceCloudFilesBundle\LiuggioRackspaceCloudFilesBundle(),
+        new Tvision\RackspaceCloudFilesBundle\LiuggioRackspaceCloudFilesBundle(),
     );
     ...
 ```
@@ -89,7 +89,7 @@ Installation Composer
      {
          $bundles = array(
          // ...
-            new Liuggio\RackspaceCloudFilesBundle\LiuggioRackspaceCloudFilesBundle(),
+            new Tvision\RackspaceCloudFilesBundle\LiuggioRackspaceCloudFilesBundle(),
          // ...
 
 ```

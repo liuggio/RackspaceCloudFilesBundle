@@ -1,6 +1,6 @@
 <?php
 
-namespace Liuggio\RackspaceCloudFilesBundle\DependencyInjection;
+namespace Tvision\RackspaceCloudFilesBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -14,18 +14,17 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('liuggio_rackspace_cloud_files');
-
+        $rootNode = $treeBuilder->root('tvision_rackspace_cloud_files');
 
         $rootNode
             ->children()
                 ->scalarNode('container_prefix')->defaultValue('')->end()
-                ->scalarNode('service_class')->defaultValue('Liuggio\RackspaceCloudFilesBundle\Service\RSCFService')->end()
+                ->scalarNode('service_class')->defaultValue('Tvision\RackspaceCloudFilesBundle\Service\RSCFService')->end()
                 ->arrayNode('stream_wrapper')
                     ->children()                
                         ->scalarNode('register')->defaultValue(false)->end()
                         ->scalarNode('protocol_name')->defaultValue('rscf')->end()
-                        ->scalarNode('class')->defaultValue('\\Liuggio\\RackspaceCloudFilesStreamWrapper\\StreamWrapper\\RackspaceCloudFilesStreamWrapper')->end()
+                        ->scalarNode('class')->defaultValue('\\Tvision\\RackspaceCloudFilesStreamWrapper\\StreamWrapper\\RackspaceCloudFilesStreamWrapper')->end()
                     ->end()
                 ->end()
                 ->arrayNode('auth')

@@ -1,19 +1,19 @@
 parameters:
 
 
-    liuggio_rackspace_cloud_files.service.class: Liuggio\RackspaceCloudFilesBundle\Service\RSCFService
-    liuggio_rackspace_cloud_files.api.service.class: Liuggio\RackspaceCloudFilesBundle\Service\RackspaceApi
-    liuggio_rackspace_cloud_files.api.connection.class: OpenCloud\Rackspace
+    tvision_rackspace_cloud_files.service.class: Tvision\RackspaceCloudFilesStreamWrapper\Service\RSCFService
+    tvision_rackspace_cloud_files.api.service.class: Tvision\RackspaceCloudFilesStreamWrapper\Service\RackspaceApi
+    tvision_rackspace_cloud_files.api.connection.class: OpenCloud\Rackspace
 
-    liuggio_rackspace_cloud_files.resource_entity.class: Liuggio\RackspaceCloudFilesStreamWrapper\RackspaceCloudFilesResource
-    liuggio_rackspace_cloud_files.filetype_guesser_entity.class: Liuggio\RackspaceCloudFilesBundle\FileTypeGuesser
+    tvision_rackspace_cloud_files.resource_entity.class: Tvision\RackspaceCloudFilesStreamWrapper\Model\RackspaceCloudFilesResource
+    tvision_rackspace_cloud_files.filetype_guesser_entity.class: Tvision\RackspaceCloudFilesStreamWrapper\Service\FileTypeGuesser
 
 services:
 
-    liuggio_rackspace_cloud_files.api.service:
-        class: %liuggio_rackspace_cloud_files.api.service.class%
-        arguments: [%liuggio_rackspace_cloud_files.api.connection.class%, %liuggio_rackspace_cloud_files.auth.host%, %liuggio_rackspace_cloud_files.auth.username%, %liuggio_rackspace_cloud_files.auth.api_key%, %liuggio_rackspace_cloud_files.auth.container_name%]
+    tvision_rackspace_cloud_files.api.service:
+        class: %tvision_rackspace_cloud_files.api.service.class%
+        arguments: [%tvision_rackspace_cloud_files.api.connection.class%, %tvision_rackspace_cloud_files.auth.host%, %tvision_rackspace_cloud_files.auth.username%, %tvision_rackspace_cloud_files.auth.api_key%, %tvision_rackspace_cloud_files.auth.container_name%]
 
-    liuggio_rackspace_cloud_files.service:
-        class: %liuggio_rackspace_cloud_files.service.class%
-        arguments: [%liuggio_rackspace_cloud_files.stream_wrapper.protocol_name%, '@liuggio_rackspace_cloud_files.api.service', %liuggio_rackspace_cloud_files.stream_wrapper.class%, %liuggio_rackspace_cloud_files.resource_entity.class%, %liuggio_rackspace_cloud_files.filetype_guesser_entity.class%]
+    tvision_rackspace_cloud_files.service:
+        class: %tvision_rackspace_cloud_files.service.class%
+        arguments: [%tvision_rackspace_cloud_files.stream_wrapper.protocol_name%, '@tvision_rackspace_cloud_files.api.service', %tvision_rackspace_cloud_files.stream_wrapper.class%, %tvision_rackspace_cloud_files.resource_entity.class%, %tvision_rackspace_cloud_files.filetype_guesser_entity.class%]
