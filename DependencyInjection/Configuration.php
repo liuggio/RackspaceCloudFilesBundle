@@ -33,6 +33,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('api_key')->defaultValue(null)->end()
                         ->scalarNode('container_name')->defaultValue(null)->end()
                         ->scalarNode('host')->defaultValue('https://lon.identity.api.rackspacecloud.com/v2.0')->end()
+                        ->scalarNode('region')->defaultValue('LON')->end()
                     ->end()
               ->end();
 

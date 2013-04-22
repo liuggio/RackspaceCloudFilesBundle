@@ -31,7 +31,7 @@ class TvisionRackspaceCloudFilesExtension extends Extension
         
         foreach ($config['auth'] as $k => $v) {
            $container->setParameter($this->getAlias().'.auth.'.$k, $v);
-        }    
+        }
         
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

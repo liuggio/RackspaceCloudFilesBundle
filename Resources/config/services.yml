@@ -12,7 +12,7 @@ services:
 
     tvision_rackspace_cloud_files.api.service:
         class: %tvision_rackspace_cloud_files.api.service.class%
-        arguments: [%tvision_rackspace_cloud_files.api.connection.class%, %tvision_rackspace_cloud_files.auth.host%, %tvision_rackspace_cloud_files.auth.username%, %tvision_rackspace_cloud_files.auth.api_key%, %tvision_rackspace_cloud_files.auth.container_name%]
+        arguments: [%tvision_rackspace_cloud_files.api.connection.class%, %tvision_rackspace_cloud_files.auth.host%, %tvision_rackspace_cloud_files.auth.username%, %tvision_rackspace_cloud_files.auth.api_key%, %tvision_rackspace_cloud_files.auth.container_name%, %tvision_rackspace_cloud_files.auth.region%]
 
     tvision_rackspace_cloud_files.service:
         class: %tvision_rackspace_cloud_files.service.class%
